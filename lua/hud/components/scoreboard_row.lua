@@ -3,9 +3,9 @@ local hud_utils = include("hud/gogm_hud_util.lua")
 local PANEL = {}
 
 local roles = {
-    ["user"] = "Visitor",
-    ["admin"] = "Moderator",
-    ["superadmin"] = "Prostir Team",
+    ["user"] = "Player",
+    ["admin"] = "Admin",
+    ["superadmin"] = "Super Admin",
 }
 local function matchRole(role)
     return roles[role] or "Unknown Role"
@@ -61,7 +61,7 @@ function PANEL:ReloadRow()
         self.playerAvatarBtn.DoClick = function() end
     end
     self.playerName:SetText(self.player:Nick())
-    self.playerPingLabel:SetText(hud_utils.leftpad(tostring(self.player:Ping()), 3, "0"))
+    self.playerPingLabel:SetText(hud_utils.leftpad(tostring(math.Clamp(self.player:Ping(), 0, 999)), 3, "0"))
     self.playerRoleLabel:SetText(matchRole(self.player:GetUserGroup()))
 end
 
