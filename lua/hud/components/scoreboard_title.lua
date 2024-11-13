@@ -5,7 +5,8 @@ local PANEL = {}
 
 local function updatePlayerCount(self)
     self.playerCount = #player.GetAll()
-    self.playerCountLabel:SetText(hud_utils.leftpad(tostring(self.playerCount), 2, "0") .. " / " .. game.MaxPlayers())
+    self.playerCountLabel:SetText(hud_utils.leftpad(tostring(self.playerCount), 3, "0")
+        .. " / " .. hud_utils.leftpad(tostring(game.MaxPlayers()), 3, "0"))
 end
 
 function PANEL:Init()
