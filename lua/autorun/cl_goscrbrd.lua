@@ -1,5 +1,6 @@
 local load_scripts = {
     "hud/gogm_hud_palette.lua",
+    "hud/goscrbrd_roles.lua",
     "hud/gogm_hud_scoreboard.lua",
 }
 

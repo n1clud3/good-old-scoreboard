@@ -1,14 +1,10 @@
 local hud_utils = include("hud/gogm_hud_util.lua")
+include("hud/goscrbrd_roles.lua")
 
 local PANEL = {}
 
-local roles = {
-    ["user"] = "Player",
-    ["admin"] = "Admin",
-    ["superadmin"] = "Super Admin",
-}
 local function matchRole(role)
-    return roles[role] or "Unknown Role"
+    return HUDROLES[role] or "Unknown Role"
 end
 
 function PANEL:Init()
@@ -16,6 +12,8 @@ function PANEL:Init()
 
     self._oldPing = 0
     self._oldUserGroup = "user"
+    self._oldDeathCount = 0
+    self._oldKillCount = 0
 
     self.playerAvatarBtn = vgui.Create("DButton", self)
     self.playerAvatarBtn.Paint = function() end
@@ -39,13 +37,31 @@ function PANEL:Init()
     self.playerPingIcon:SetColor(HUDPAL.Light1)
     self.playerPingIcon:SetIconMaterial("vgui/gogm_icons/signal_cellular.png")
 
+    self.playerDeathcountLabel = vgui.Create("DLabel", self)
+    self.playerDeathcountLabel:SetColor(HUDPAL.Light1)
+    self.playerDeathcountLabel:SetFont("GOGmScoreboardNumbers")
+    self.playerDeathcountLabel:SetText("0")
+
+    self.playerDeathcountIcon = vgui.Create("gogm_icon", self)
+    self.playerDeathcountIcon:SetColor(HUDPAL.Light1)
+    self.playerDeathcountIcon:SetIconMaterial("vgui/gogm_icons/skull.png")
+
+    self.playerKillcountLabel = vgui.Create("DLabel", self)
+    self.playerKillcountLabel:SetColor(HUDPAL.Light1)
+    self.playerKillcountLabel:SetFont("GOGmScoreboardNumbers")
+    self.playerKillcountLabel:SetText("0")
+
+    self.playerKillcountIcon = vgui.Create("gogm_icon", self)
+    self.playerKillcountIcon:SetColor(HUDPAL.Light1)
+    self.playerKillcountIcon:SetIconMaterial("vgui/gogm_icons/swords.png")
+
     self.playerRoleLabel = vgui.Create("DLabel", self)
-    self.playerRoleLabel:SetColor(HUDPAL.Light1)
+    self.playerRoleLabel:SetColor(matchRole("user").color)
     self.playerRoleLabel:SetFont("GOGmScoreboardPlayerName")
-    self.playerRoleLabel:SetText(matchRole("user"))
+    self.playerRoleLabel:SetText(matchRole("user").name)
 
     self.playerRoleIcon = vgui.Create("gogm_icon", self)
-    self.playerRoleIcon:SetColor(HUDPAL.Light1)
+    self.playerRoleIcon:SetColor(matchRole("user").color)
     self.playerRoleIcon:SetIconMaterial("vgui/gogm_icons/assignment_ind.png")
 end
 
@@ -61,8 +77,14 @@ function PANEL:ReloadRow()
         self.playerAvatarBtn.DoClick = function() end
     end
     self.playerName:SetText(self.player:Nick())
+
+    local usgdat = matchRole(self.player:GetUserGroup())
+    self.playerRoleIcon:SetColor(usgdat.color)
     self.playerPingLabel:SetText(hud_utils.leftpad(tostring(math.Clamp(self.player:Ping(), 0, 999)), 3, "0"))
-    self.playerRoleLabel:SetText(matchRole(self.player:GetUserGroup()))
+    self.playerRoleLabel:SetColor(usgdat.color)
+    self.playerRoleLabel:SetText(usgdat.name)
+    self.playerDeathcountLabel:SetText(self.player:Deaths())
+    self.playerKillcountLabel:SetText(self.player:Frags())
 end
 
 function PANEL:SetPlayer(ply)
@@ -99,6 +121,26 @@ function PANEL:PerformLayout(w, h)
     self.playerPingIcon:SetSize(24, 24)
     self.playerPingIcon:DockMargin(12, 0, 0, 0)
     self.playerPingIcon:Dock(RIGHT)
+
+    surface.SetFont(self.playerDeathcountLabel:GetFont())
+    local pdc_width, pdc_height = surface.GetTextSize(self.playerDeathcountLabel:GetText())
+    self.playerDeathcountLabel:SetSize(pdc_width, pdc_height)
+    self.playerDeathcountLabel:DockMargin(12, 0, 0, 0)
+    self.playerDeathcountLabel:Dock(RIGHT)
+
+    self.playerDeathcountIcon:SetSize(24, 24)
+    self.playerDeathcountIcon:DockMargin(12, 0, 0, 0)
+    self.playerDeathcountIcon:Dock(RIGHT)
+
+    surface.SetFont(self.playerKillcountLabel:GetFont())
+    local pkc_width, pkc_height = surface.GetTextSize(self.playerKillcountLabel:GetText())
+    self.playerKillcountLabel:SetSize(pkc_width, pkc_height)
+    self.playerKillcountLabel:DockMargin(12, 0, 0, 0)
+    self.playerKillcountLabel:Dock(RIGHT)
+
+    self.playerKillcountIcon:SetSize(24, 24)
+    self.playerKillcountIcon:DockMargin(12, 0, 0, 0)
+    self.playerKillcountIcon:Dock(RIGHT)
 
     surface.SetFont(self.playerRoleLabel:GetFont())
     local pr_width, pr_height = surface.GetTextSize(self.playerRoleLabel:GetText())
@@ -137,8 +179,22 @@ function PANEL:Think()
 
     local newUsg = self.player:GetUserGroup()
     if (newUsg ~= self._oldUserGroup) then
-        self.playerRoleLabel:SetText(matchRole(newUsg))
+        self.playerRoleIcon:SetColor(matchRole(newUsg).color)
+        self.playerRoleLabel:SetColor(matchRole(newUsg).color)
+        self.playerRoleLabel:SetText(matchRole(newUsg).name)
         self._oldUserGroup = newUsg
+    end
+
+    local newDeathcount = self.player:Deaths()
+    if (newDeathcount ~= self._oldDeathcount) then
+        self.playerDeathcountLabel:SetText(newDeathcount)
+        self._oldDeathcount = newDeathcount
+    end
+
+    local newKillcount = self.player:Frags()
+    if (newKillcount ~= self._oldKillcount) then
+        self.playerKillcountLabel:SetText(newKillcount)
+        self._oldKillcount = newKillcount
     end
 end
 
