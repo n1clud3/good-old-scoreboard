@@ -15,12 +15,17 @@ include("hud/components/scoreboard_row.lua")
 include("hud/components/scoreboard_title.lua")
 include("hud/components/scoreboard_frame.lua")
 
+local cvar_blur_toggle = CreateConVar("cl_goscrbrd_blur", "1", FCVAR_ARCHIVE, "Toggle the scoreboard background blur"):GetBool()
+local cvar_blur_intensity = CreateConVar("cl_goscrbrd_blur_intensity", 3.0, FCVAR_ARCHIVE, "Intensity of the background blur", 0.0):GetFloat()
+
+
 do -- Scoreboard root
     local PANEL = {}
 
     function PANEL:Init()
         self.matBlurScreen = Material("pp/blurscreen")
-        self.blurFactor = 3.0
+        self.blurToggle = cvar_blur_toggle
+        self.blurFactor = cvar_blur_intensity
 
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
         self.scoreboardFrameWidth = 900
@@ -36,18 +41,20 @@ do -- Scoreboard root
     end
 
     function PANEL:Paint(w, h)
-        -- draw blur
-        surface.SetMaterial(self.matBlurScreen)
-        surface.SetDrawColor(255, 255, 255)
+        if (self.blurToggle) then -- draw blur
+            surface.SetMaterial(self.matBlurScreen)
+            surface.SetDrawColor(255, 255, 255)
 
-        for i = 0.33, 1, 0.33 do
-            self.matBlurScreen:SetFloat("$blur", self.blurFactor * i)
-            self.matBlurScreen:Recompute()
-            render.UpdateScreenEffectTexture()
-            surface.DrawTexturedRect(0, 0, w, h)
+            for i = 0.33, 1, 0.33 do
+                self.matBlurScreen:SetFloat("$blur", self.blurFactor * i)
+                self.matBlurScreen:Recompute()
+                render.UpdateScreenEffectTexture()
+                surface.DrawTexturedRect(0, 0, w, h)
+            end
         end
 
         draw.NoTexture() -- reset blur material
+
         -- dim background
         surface.SetDrawColor(0, 0, 0,255 * 0.4)
         surface.DrawRect(0, 0, w, h)
@@ -68,6 +75,14 @@ do -- Scoreboard root
     function PANEL:RemoveScoreboard()
         self.scoreboardFrame:Remove()
         self:Remove()
+    end
+
+    function PANEL:SetBlurToggle(val)
+        self.blurToggle = val
+    end
+
+    function PANEL:SetBlurFactor(fact)
+        self.blurFactor = fact
     end
 
     vgui.Register("gogm_scoreboard", PANEL)
@@ -95,6 +110,20 @@ local function reloadScoreboard()
         scoreboard:RemoveScoreboard()
     end
 end
+
+cvars.AddChangeCallback("cl_goscrbrd_blur", function(cvar, oldV, newV)
+    cvar_blur_toggle = newV
+    if (IsValid(scoreboard)) then
+        scoreboard:SetBlurToggle(cvar_blur_toggle)
+    end
+end)
+
+cvars.AddChangeCallback("cl_goscrbrd_blur_intensity", function(cvar, oldV, newV)
+    cvar_blur_intensity = newV
+    if (IsValid(scoreboard)) then
+        scoreboard:SetBlurFactor(newV)
+    end
+end)
 
 concommand.Add("cl_goscrbrd_reload", reloadScoreboard)
 hook.Add("OnReloaded", hook_name, reloadScoreboard)
