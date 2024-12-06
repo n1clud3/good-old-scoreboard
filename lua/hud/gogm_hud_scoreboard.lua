@@ -1,6 +1,6 @@
 local surface = surface
 
-local hook_name = "gogm_scoreboard"
+local hook_name = "good_old_scoreboard"
 
 include("hud/gogm_hud_fonts.lua")
 
@@ -29,7 +29,7 @@ do -- Scoreboard root
 
     function PANEL:PerformLayout()
         self:SetSize(scrW, scrH)
-        self:SetPos(0, 0);
+        self:SetPos(0, 0)
 
         self.scoreboardFrame:SetSize(self.scoreboardFrameWidth, self.scoreboardFrameHeight)
         self.scoreboardFrame:Center()
@@ -65,6 +65,11 @@ do -- Scoreboard root
         self:Hide()
     end
 
+    function PANEL:RemoveScoreboard()
+        self.scoreboardFrame:Remove()
+        self:Remove()
+    end
+
     vgui.Register("gogm_scoreboard", PANEL)
 end
 
@@ -84,3 +89,12 @@ hook.Add("ScoreboardHide", hook_name, function()
         scoreboard:HideScoreboard()
     end
 end)
+
+local function reloadScoreboard()
+    if (IsValid(scoreboard)) then
+        scoreboard:RemoveScoreboard()
+    end
+end
+
+concommand.Add("cl_goscrbrd_reload", reloadScoreboard)
+hook.Add("OnReloaded", hook_name, reloadScoreboard)
