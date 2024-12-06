@@ -10,7 +10,7 @@ function PANEL:Init()
     self.playerRowsPanel:Dock(FILL)
 
     local endrow = vgui.Create("DLabel")
-    endrow:SetColor(HUDPAL.Light3)
+    endrow:SetColor(HUDPAL.Light1)
     endrow:SetFont("GOGmScoreboardRegular")
     endrow:SetText(language.GetPhrase("goscrbrd.eolist"))
     endrow:Dock(TOP)

@@ -17,7 +17,7 @@ end
 
 function PANEL:Paint(w, h)
     draw.RoundedBox(8, 0, 0, w, h, HUDPAL.Light2)
-    draw.RoundedBox(8, 0, 0, w, h - 1, HUDPAL.Light1)
+    draw.RoundedBox(8, 0, 0, w, h - 1, HUDPAL.Light3)
 
     if (self.userMuted) then surface.SetMaterial(self.volumeOffMaterial) else surface.SetMaterial(self.volumeOnMaterial) end
 

@@ -12,16 +12,16 @@ end
 function PANEL:Init()
     self.title = vgui.Create("DLabel", self)
     self.title:SetFont("GOGmScoreboardTitle")
-    self.title:SetTextColor(HUDPAL.Light1)
+    self.title:SetTextColor(HUDPAL.Light3)
 
     self.playerCount = 0
 
     self.playerCountLabel = vgui.Create("DLabel", self)
     self.playerCountLabel:SetFont("GOGmScoreboardNumbers")
-    self.playerCountLabel:SetTextColor(HUDPAL.Light1)
+    self.playerCountLabel:SetTextColor(HUDPAL.Light3)
 
     self.playerCountIcon = vgui.Create("gogm_icon", self)
-    self.playerCountIcon:SetColor(HUDPAL.Light1)
+    self.playerCountIcon:SetColor(HUDPAL.Light3)
     self.playerCountIcon:SetIconMaterial("vgui/gogm_icons/group.png")
 
     updatePlayerCount(self)

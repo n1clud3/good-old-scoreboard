@@ -29,30 +29,30 @@ function PANEL:Init()
     self.playerMuteBtn:SetPlayer(self.player)
 
     self.playerPingLabel = vgui.Create("DLabel", self)
-    self.playerPingLabel:SetColor(HUDPAL.Light1)
+    self.playerPingLabel:SetColor(HUDPAL.Light3)
     self.playerPingLabel:SetFont("GOGmScoreboardNumbers")
     self.playerPingLabel:SetText("000")
 
     self.playerPingIcon = vgui.Create("gogm_icon", self)
-    self.playerPingIcon:SetColor(HUDPAL.Light1)
+    self.playerPingIcon:SetColor(HUDPAL.Light3)
     self.playerPingIcon:SetIconMaterial("vgui/gogm_icons/signal_cellular.png")
 
     self.playerDeathcountLabel = vgui.Create("DLabel", self)
-    self.playerDeathcountLabel:SetColor(HUDPAL.Light1)
+    self.playerDeathcountLabel:SetColor(HUDPAL.Light3)
     self.playerDeathcountLabel:SetFont("GOGmScoreboardNumbers")
     self.playerDeathcountLabel:SetText("0")
 
     self.playerDeathcountIcon = vgui.Create("gogm_icon", self)
-    self.playerDeathcountIcon:SetColor(HUDPAL.Light1)
+    self.playerDeathcountIcon:SetColor(HUDPAL.Light3)
     self.playerDeathcountIcon:SetIconMaterial("vgui/gogm_icons/skull.png")
 
     self.playerKillcountLabel = vgui.Create("DLabel", self)
-    self.playerKillcountLabel:SetColor(HUDPAL.Light1)
+    self.playerKillcountLabel:SetColor(HUDPAL.Light3)
     self.playerKillcountLabel:SetFont("GOGmScoreboardNumbers")
     self.playerKillcountLabel:SetText("0")
 
     self.playerKillcountIcon = vgui.Create("gogm_icon", self)
-    self.playerKillcountIcon:SetColor(HUDPAL.Light1)
+    self.playerKillcountIcon:SetColor(HUDPAL.Light3)
     self.playerKillcountIcon:SetIconMaterial("vgui/gogm_icons/swords.png")
 
     self.playerRoleLabel = vgui.Create("DLabel", self)
