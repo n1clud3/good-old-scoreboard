@@ -80,6 +80,9 @@ do -- Scoreboard root
     end
 
     function PANEL:RemoveScoreboard()
+        for id,ply in ipairs(player.GetAll()) do
+            if (IsValid(ply.scorerow)) then ply.scorerow:Remove() end
+        end
         self.scoreboardFrame:Remove()
         self:Remove()
     end
@@ -121,6 +124,7 @@ hook.Add("ScoreboardHide", hook_name, function()
 end)
 
 local function reloadScoreboard()
+    print("Scoreboard reloaded.")
     if (IsValid(scoreboard)) then
         scoreboard:RemoveScoreboard()
     end

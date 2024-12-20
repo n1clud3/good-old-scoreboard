@@ -33,6 +33,23 @@ function PANEL:Paint(w, h)
     draw.RoundedBox(32, 0, 0, w, h, HUDPAL.Dark1)
 end
 
+function PANEL:RebuildPlayerList()
+    for id,ply in ipairs(player.GetAll()) do
+        if (IsValid(ply.scorerow)) then ply.scorerow:Remove() end
+    end
+
+    for id,ply in ipairs(player.GetAll()) do
+        if (IsValid(ply.scorerow)) then continue end
+
+        ply.scorerow = vgui.Create("gogm_scoreboard_row", ply.scorerow)
+        ply.scorerow:SetPlayer(ply)
+        ply.scorerow:DockMargin(0, 0, 0, self.gap)
+        ply.scorerow:Dock(TOP)
+
+        self.playerRowsPanel:AddItem(ply.scorerow)
+    end
+end
+
 function PANEL:Think()
     for id,ply in ipairs(player.GetAll()) do
         if (IsValid(ply.scorerow)) then continue end
