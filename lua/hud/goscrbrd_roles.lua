@@ -1,5 +1,9 @@
 HUDROLES = {}
 
+HUDROLES["default"] = {}
+HUDROLES["default"].name = language.GetPhrase("goscrbrd.role.default")
+HUDROLES["default"].color = Color(200, 200, 200)
+
 HUDROLES["user"] = {}
 HUDROLES["user"].name = language.GetPhrase("goscrbrd.role.user")
 HUDROLES["user"].color = Color(200, 230, 255)
