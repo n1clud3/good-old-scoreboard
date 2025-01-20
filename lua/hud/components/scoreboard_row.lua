@@ -85,6 +85,7 @@ function PANEL:ReloadRow()
     self.playerRoleLabel:SetText(usgdat.name)
     self.playerDeathcountLabel:SetText(self.player:Deaths())
     self.playerKillcountLabel:SetText(self.player:Frags())
+    self.playerMuteBtn:SetPlayer(self.player)
 end
 
 function PANEL:SetPlayer(ply)
