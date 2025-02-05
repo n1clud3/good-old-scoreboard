@@ -9,7 +9,8 @@ I released the scoreboard to the public.
 
 ## Features
 
-TODO: write about features.
+- Easy custom role setup
+- Customizable background dim and blur
 
 ## Configuration
 
