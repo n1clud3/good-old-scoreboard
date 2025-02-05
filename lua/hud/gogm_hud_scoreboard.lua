@@ -124,10 +124,10 @@ hook.Add("ScoreboardHide", hook_name, function()
 end)
 
 local function reloadScoreboard()
-    print("Scoreboard reloaded.")
     if (IsValid(scoreboard)) then
         scoreboard:RemoveScoreboard()
     end
+    print("Scoreboard reloaded.")
 end
 
 cvars.AddChangeCallback("cl_goscrbrd_blur", function(cvar, oldV, newV)

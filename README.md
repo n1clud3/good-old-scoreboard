@@ -11,6 +11,10 @@ I released the scoreboard to the public.
 
 TODO: write about features.
 
+## Configuration
+
+See the [docs](./docs/) for more information.
+
 ## Credits
 
 - **n1clude** - original design and functionality

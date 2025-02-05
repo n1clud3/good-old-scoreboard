@@ -1,17 +1,28 @@
 HUDROLES = {}
 
-HUDROLES["default"] = {}
-HUDROLES["default"].name = language.GetPhrase("goscrbrd.role.default")
-HUDROLES["default"].color = Color(200, 200, 200)
+--- @param group_name string
+--- @param group_color Color
+function HUDROLES:Set(group_name, group_color)
+    self[group_name] = {}
+    self[group_name].name = language.GetPhrase("goscrbrd.role." .. group_name)
+    self[group_name].color = group_color
+end
 
-HUDROLES["user"] = {}
-HUDROLES["user"].name = language.GetPhrase("goscrbrd.role.user")
-HUDROLES["user"].color = Color(200, 230, 255)
+function HUDROLES:ReloadLocales()
+    for k, v in pairs(self) do
+        if (isfunction(v)) then continue end
+        v.name = language.GetPhrase("goscrbrd.role." .. k)
+    end
+end
 
-HUDROLES["admin"] = {}
-HUDROLES["admin"].name = language.GetPhrase("goscrbrd.role.admin")
-HUDROLES["admin"].color = Color(255, 203, 203)
+local OldLanguageChanged = LanguageChanged or function() end
+function LanguageChanged()
+    HUDROLES:ReloadLocales()
+    concommand.Run(LocalPlayer(), "cl_goscrbrd_reload")
+    OldLanguageChanged()
+end
 
-HUDROLES["superadmin"] = {}
-HUDROLES["superadmin"].name = language.GetPhrase("goscrbrd.role.superadmin")
-HUDROLES["superadmin"].color = Color(239, 210, 255)
+HUDROLES:Set("default", Color(200, 200, 200))
+HUDROLES:Set("user", Color(200, 230, 255))
+HUDROLES:Set("admin", Color(255, 203, 203))
+HUDROLES:Set("superadmin", Color(239, 210, 255))
