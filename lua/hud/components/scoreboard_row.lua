@@ -1,6 +1,7 @@
 local hud_utils = include("hud/gogm_hud_util.lua")
 include("hud/goscrbrd_roles.lua")
 
+--- @class gogm_scoreboard_row : Panel
 local PANEL = {}
 
 local function matchRole(role)
@@ -15,51 +16,63 @@ function PANEL:Init()
     self._oldDeathCount = 0
     self._oldKillCount = 0
 
+    --- @class DButton
     self.playerAvatarBtn = vgui.Create("DButton", self)
     self.playerAvatarBtn.Paint = function() end
 
+    --- @class AvatarImage
     self.playerAvatar = vgui.Create("AvatarImage", self.playerAvatarBtn)
     self.playerAvatar:SetMouseInputEnabled(false)
 
+    --- @class DLabel
     self.playerName = vgui.Create("DLabel", self)
     self.playerName:SetColor(HUDPAL.White)
     self.playerName:SetFont("GOGmScoreboardPlayerName")
 
+    --- @class gogm_scoreboard_mute_btn
     self.playerMuteBtn = vgui.Create("gogm_scoreboard_mute_btn", self)
     self.playerMuteBtn:SetPlayer(self.player)
 
+    --- @class DLabel
     self.playerPingLabel = vgui.Create("DLabel", self)
     self.playerPingLabel:SetColor(HUDPAL.Light3)
     self.playerPingLabel:SetFont("GOGmScoreboardNumbers")
     self.playerPingLabel:SetText("000")
 
+    --- @class gogm_icon
     self.playerPingIcon = vgui.Create("gogm_icon", self)
     self.playerPingIcon:SetColor(HUDPAL.Light3)
     self.playerPingIcon:SetIconMaterial("vgui/gogm_icons/signal_cellular.png")
 
+    --- @class DLabel
     self.playerDeathcountLabel = vgui.Create("DLabel", self)
     self.playerDeathcountLabel:SetColor(HUDPAL.Light3)
     self.playerDeathcountLabel:SetFont("GOGmScoreboardNumbers")
     self.playerDeathcountLabel:SetText("0")
 
+    --- @class gogm_icon
     self.playerDeathcountIcon = vgui.Create("gogm_icon", self)
     self.playerDeathcountIcon:SetColor(HUDPAL.Light3)
     self.playerDeathcountIcon:SetIconMaterial("vgui/gogm_icons/skull.png")
 
+    --- @class DLabel
     self.playerKillcountLabel = vgui.Create("DLabel", self)
     self.playerKillcountLabel:SetColor(HUDPAL.Light3)
     self.playerKillcountLabel:SetFont("GOGmScoreboardNumbers")
     self.playerKillcountLabel:SetText("0")
 
+    --- @class gogm_icon
     self.playerKillcountIcon = vgui.Create("gogm_icon", self)
     self.playerKillcountIcon:SetColor(HUDPAL.Light3)
     self.playerKillcountIcon:SetIconMaterial("vgui/gogm_icons/swords.png")
 
+    --- @class DLabel
     self.playerRoleLabel = vgui.Create("DLabel", self)
     self.playerRoleLabel:SetColor(matchRole("user").color)
     self.playerRoleLabel:SetFont("GOGmScoreboardPlayerName")
     self.playerRoleLabel:SetText(matchRole("user").name)
 
+    --- @class gogm_icon
     self.playerRoleIcon = vgui.Create("gogm_icon", self)
     self.playerRoleIcon:SetColor(matchRole("user").color)
     self.playerRoleIcon:SetIconMaterial("vgui/gogm_icons/assignment_ind.png")
@@ -67,14 +80,13 @@ end
 
 function PANEL:ReloadRow()
     self.playerAvatar:SetPlayer(self.player, 32)
+    self.playerAvatarBtn.DoClick = function() end
     if (not self.player:IsBot()) then
         self.playerAvatarBtn.DoClick = function()
             self.player:ShowProfile()
             local text = "https://steamcommunity.com/profiles/" .. self.player:SteamID64()
             SetClipboardText(text)
         end
-    else
-        self.playerAvatarBtn.DoClick = function() end
     end
     self.playerName:SetText(self.player:Nick())
 
@@ -83,8 +95,8 @@ function PANEL:ReloadRow()
     self.playerPingLabel:SetText(hud_utils.leftpad(tostring(math.Clamp(self.player:Ping(), 0, 999)), 3, "0"))
     self.playerRoleLabel:SetColor(usgdat.color)
     self.playerRoleLabel:SetText(usgdat.name)
-    self.playerDeathcountLabel:SetText(self.player:Deaths())
-    self.playerKillcountLabel:SetText(self.player:Frags())
+    self.playerDeathcountLabel:SetText(tostring(self.player:Deaths()))
+    self.playerKillcountLabel:SetText(tostring(self.player:Frags()))
     self.playerMuteBtn:SetPlayer(self.player)
 end
 
@@ -188,13 +200,13 @@ function PANEL:Think()
 
     local newDeathcount = self.player:Deaths()
     if (newDeathcount ~= self._oldDeathcount) then
-        self.playerDeathcountLabel:SetText(newDeathcount)
+        self.playerDeathcountLabel:SetText(tostring(newDeathcount))
         self._oldDeathcount = newDeathcount
     end
 
     local newKillcount = self.player:Frags()
     if (newKillcount ~= self._oldKillcount) then
-        self.playerKillcountLabel:SetText(newKillcount)
+        self.playerKillcountLabel:SetText(tostring(newKillcount))
         self._oldKillcount = newKillcount
     end
 end

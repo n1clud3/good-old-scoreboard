@@ -16,9 +16,9 @@ include("hud/components/scoreboard_title.lua")
 include("hud/components/scoreboard_frame.lua")
 
 local cvar_blur_toggle = CreateConVar("cl_goscrbrd_blur", "1", FCVAR_ARCHIVE, "Toggle the scoreboard background blur"):GetBool()
-local cvar_blur_intensity = CreateConVar("cl_goscrbrd_blur_intensity", 3.0, FCVAR_ARCHIVE, "Intensity of the background blur", 0.0):GetFloat()
+local cvar_blur_intensity = CreateConVar("cl_goscrbrd_blur_intensity", "3.0", FCVAR_ARCHIVE, "Intensity of the background blur", 0.0):GetFloat()
 local cvar_dim_toggle = CreateConVar("cl_goscrbrd_dim", "1", FCVAR_ARCHIVE, "Scoreboard background dim toggle"):GetBool()
-local cvar_dim_intensity = CreateConVar("cl_goscrbrd_dim_intensity", 0.4, FCVAR_ARCHIVE, "Intensity of the background dim", 0.0, 1.0):GetFloat()
+local cvar_dim_intensity = CreateConVar("cl_goscrbrd_dim_intensity", "0.4", FCVAR_ARCHIVE, "Intensity of the background dim", 0.0, 1.0):GetFloat()
 
 
 do -- Scoreboard root
@@ -138,7 +138,7 @@ cvars.AddChangeCallback("cl_goscrbrd_blur", function(cvar, oldV, newV)
 end)
 
 cvars.AddChangeCallback("cl_goscrbrd_blur_intensity", function(cvar, oldV, newV)
-    cvar_blur_intensity = newV
+    cvar_blur_intensity = tonumber(newV) or 3.0
     if (IsValid(scoreboard)) then
         scoreboard:SetBlurFactor(newV)
     end
@@ -152,7 +152,7 @@ cvars.AddChangeCallback("cl_goscrbrd_dim", function(cvar, oldV, newV)
 end)
 
 cvars.AddChangeCallback("cl_goscrbrd_dim_intensity", function(cvar, oldV, newV)
-    cvar_dim_intensity = newV
+    cvar_dim_intensity = tonumber(newV) or 0.4
     if (IsValid(scoreboard)) then
         scoreboard:SetDimIntensity(cvar_dim_intensity)
     end

@@ -1,6 +1,7 @@
 local hud_utils = include("hud/gogm_hud_util.lua")
 include("hud/components/icon.lua")
 
+--- @class gogm_scoreboard_title : Panel
 local PANEL = {}
 
 local function updatePlayerCount(self)

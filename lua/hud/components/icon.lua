@@ -1,3 +1,4 @@
+--- @class gogm_icon : Panel
 local PANEL = {}
 
 function PANEL:Init()

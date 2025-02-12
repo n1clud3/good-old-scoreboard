@@ -1,5 +1,9 @@
+--- @class HUDRole
+--- @field name string
+--- @field color Color
+
 --- @class HUDROLES
---- @field roles table<string, table<string, string|Color>>
+--- @field roles table<HUDRole>
 HUDROLES = {}
 HUDROLES.roles = {}
 

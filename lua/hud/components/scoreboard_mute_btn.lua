@@ -1,3 +1,4 @@
+--- @class gogm_scoreboard_mute_btn : DButton
 local PANEL = {}
 
 function PANEL:Init()
@@ -11,6 +12,7 @@ function PANEL:Init()
     self.userMuted = self.player:IsMuted()
 end
 
+--- @param ply Player
 function PANEL:SetPlayer(ply)
     self.player = ply
 end
