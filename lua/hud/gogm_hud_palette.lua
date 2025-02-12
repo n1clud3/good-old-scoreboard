@@ -29,6 +29,15 @@ HUDPALhsv.Light3.h = HUDPALhsv.Dark3.h
 HUDPALhsv.Light3.s = math.Clamp(HUDPALhsv.Dark3.s * 0.8, 0, 1)
 HUDPALhsv.Light3.v = math.Clamp(HUDPALhsv.Dark3.v * 1.4, 0, 1)
 
+--- @class HUDPAL
+--- @field Black Color
+--- @field Dark1 Color
+--- @field Dark2 Color
+--- @field Dark3 Color
+--- @field Light1 Color
+--- @field Light2 Color
+--- @field Light3 Color
+--- @field White Color
 HUDPAL = {}
 HUDPAL.Black = Color(29, 29, 29)
 HUDPAL.Dark1 = HSVToColor(HUDPALhsv.Dark1.h, HUDPALhsv.Dark1.s, HUDPALhsv.Dark1.v)

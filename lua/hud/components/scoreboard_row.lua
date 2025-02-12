@@ -4,7 +4,7 @@ include("hud/goscrbrd_roles.lua")
 local PANEL = {}
 
 local function matchRole(role)
-    return HUDROLES[role] or HUDROLES["default"]
+    return HUDROLES.roles[role] or HUDROLES.roles["default"]
 end
 
 function PANEL:Init()
