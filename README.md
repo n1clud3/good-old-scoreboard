@@ -13,6 +13,8 @@ I released the scoreboard to the public.
 - Customizable background dim and blur
 - Dynamic color system
 
+Run `cvarlist cl_goscrbrd` in game console to list all available commands and customization options.
+
 ## Configuration
 
 See the [docs](./docs/) for more information.
