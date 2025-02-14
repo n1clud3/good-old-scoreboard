@@ -162,6 +162,7 @@ function PANEL:Think()
         self.playerRoleIcon:SetColor(matchRole(self._oldUserGroup).color)
         self.playerRoleLabel:SetColor(matchRole(self._oldUserGroup).color)
         self.playerRoleLabel:SetText(matchRole(self._oldUserGroup).name)
+        self.playerRoleLabel:SizeToContents()
     end
 
     
