@@ -22,4 +22,11 @@ HUDROLES:Set("superadmin", Color(255, 0, 0))
 
 By using the `HUDROLES:Set` function, you can set up a role and set its color.
 In this example, the role `superadmin` is added to a scoreboard,
-it's locale key set to `goscrbrd.role.superadmin` and its color is set to red.
+its locale key set to `goscrbrd.role.superadmin` and its color is set to red.
+
+Since you're using Lua and not some rigid JSON to configure,
+you can also use functions that return Color, like `HSVToColor()`
+or `HSLToColor()`.
+
+Refer to [lua/hud/goscrbrd_roles.lua](lua/hud/goscrbrd_roles.lua)
+for more information.
