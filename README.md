@@ -11,6 +11,7 @@ I released the scoreboard to the public.
 
 - Easy custom role setup
 - Customizable background dim and blur
+- Dynamic color system
 
 ## Configuration
 
