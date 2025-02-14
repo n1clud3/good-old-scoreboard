@@ -32,6 +32,6 @@ function _G.LanguageChanged(lang)
 end
 
 HUDROLES:Set("default", Color(200, 200, 200))
-HUDROLES:Set("user", Color(200, 230, 255))
-HUDROLES:Set("admin", Color(255, 203, 203))
-HUDROLES:Set("superadmin", Color(239, 210, 255))
+HUDROLES:Set("user", HSLToColor(210, 0.95, 0.85))
+HUDROLES:Set("admin", HSLToColor(0, 0.95, 0.85))
+HUDROLES:Set("superadmin", HSLToColor(280, 0.95, 0.85))
