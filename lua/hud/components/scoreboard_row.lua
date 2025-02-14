@@ -4,11 +4,16 @@ include("hud/goscrbrd_roles.lua")
 --- @class gogm_scoreboard_row : Panel
 local PANEL = {}
 
+--- @param role string
+--- @return HUDRole
 local function matchRole(role)
     return HUDROLES.roles[role] or HUDROLES.roles["default"]
 end
 
 function PANEL:Init()
+    self:DockPadding(6, 6, 6, 8)
+    self:SetHeight(46)
+
     self.player = LocalPlayer()
 
     self._oldPing = 0
@@ -19,63 +24,86 @@ function PANEL:Init()
     --- @class DButton
     self.playerAvatarBtn = vgui.Create("DButton", self)
     self.playerAvatarBtn.Paint = function() end
+    self.playerAvatarBtn:SetSize(32, 32)
+    self.playerAvatarBtn:DockMargin(0, 0, 12, 0)
+    self.playerAvatarBtn:Dock(LEFT)
 
-    --- @class AvatarImage
     self.playerAvatar = vgui.Create("AvatarImage", self.playerAvatarBtn)
     self.playerAvatar:SetMouseInputEnabled(false)
+    self.playerAvatar:SetSize(32, 32)
+    self.playerAvatar:Dock(FILL)
 
-    --- @class DLabel
     self.playerName = vgui.Create("DLabel", self)
     self.playerName:SetColor(HUDPAL.White)
     self.playerName:SetFont("GOGmScoreboardPlayerName")
+    self.playerName:SizeToContents()
+    self.playerName:Dock(LEFT)
 
-    --- @class gogm_scoreboard_mute_btn
     self.playerMuteBtn = vgui.Create("gogm_scoreboard_mute_btn", self)
     self.playerMuteBtn:SetPlayer(self.player)
+    self.playerMuteBtn:SetSize(32, 33)
+    self.playerMuteBtn:DockMargin(12, 0, 0, 0)
+    self.playerMuteBtn:Dock(RIGHT)
 
-    --- @class DLabel
     self.playerPingLabel = vgui.Create("DLabel", self)
     self.playerPingLabel:SetColor(HUDPAL.Light3)
     self.playerPingLabel:SetFont("GOGmScoreboardNumbers")
     self.playerPingLabel:SetText("000")
+    self.playerPingLabel:SizeToContents()
+    self.playerPingLabel:DockMargin(12, 0, 0, 0)
+    self.playerPingLabel:Dock(RIGHT)
 
-    --- @class gogm_icon
-    self.playerPingIcon = vgui.Create("gogm_icon", self)
-    self.playerPingIcon:SetColor(HUDPAL.Light3)
-    self.playerPingIcon:SetIconMaterial("vgui/gogm_icons/signal_cellular.png")
+    local playerPingIcon = vgui.Create("gogm_icon", self)
+    playerPingIcon:SetColor(HUDPAL.Light3)
+    playerPingIcon:SetIconMaterial("vgui/gogm_icons/signal_cellular.png")
+    playerPingIcon:SetSize(24, 24)
+    playerPingIcon:DockMargin(12, 0, 0, 0)
+    playerPingIcon:Dock(RIGHT)
 
-    --- @class DLabel
     self.playerDeathcountLabel = vgui.Create("DLabel", self)
     self.playerDeathcountLabel:SetColor(HUDPAL.Light3)
     self.playerDeathcountLabel:SetFont("GOGmScoreboardNumbers")
     self.playerDeathcountLabel:SetText("0")
+    self.playerDeathcountLabel:SizeToContents()
+    self.playerDeathcountLabel:DockMargin(12, 0, 0, 0)
+    self.playerDeathcountLabel:Dock(RIGHT)
 
-    --- @class gogm_icon
-    self.playerDeathcountIcon = vgui.Create("gogm_icon", self)
-    self.playerDeathcountIcon:SetColor(HUDPAL.Light3)
-    self.playerDeathcountIcon:SetIconMaterial("vgui/gogm_icons/skull.png")
+    local playerDeathcountIcon = vgui.Create("gogm_icon", self)
+    playerDeathcountIcon:SetColor(HUDPAL.Light3)
+    playerDeathcountIcon:SetIconMaterial("vgui/gogm_icons/skull.png")
+    playerDeathcountIcon:SetSize(24, 24)
+    playerDeathcountIcon:DockMargin(12, 0, 0, 0)
+    playerDeathcountIcon:Dock(RIGHT)
 
-    --- @class DLabel
     self.playerKillcountLabel = vgui.Create("DLabel", self)
     self.playerKillcountLabel:SetColor(HUDPAL.Light3)
     self.playerKillcountLabel:SetFont("GOGmScoreboardNumbers")
     self.playerKillcountLabel:SetText("0")
+    self.playerKillcountLabel:SizeToContents()
+    self.playerKillcountLabel:DockMargin(12, 0, 0, 0)
+    self.playerKillcountLabel:Dock(RIGHT)
 
-    --- @class gogm_icon
-    self.playerKillcountIcon = vgui.Create("gogm_icon", self)
-    self.playerKillcountIcon:SetColor(HUDPAL.Light3)
-    self.playerKillcountIcon:SetIconMaterial("vgui/gogm_icons/swords.png")
+    local playerKillcountIcon = vgui.Create("gogm_icon", self)
+    playerKillcountIcon:SetColor(HUDPAL.Light3)
+    playerKillcountIcon:SetIconMaterial("vgui/gogm_icons/swords.png")
+    playerKillcountIcon:SetSize(24, 24)
+    playerKillcountIcon:DockMargin(12, 0, 0, 0)
+    playerKillcountIcon:Dock(RIGHT)
 
-    --- @class DLabel
     self.playerRoleLabel = vgui.Create("DLabel", self)
     self.playerRoleLabel:SetColor(matchRole("user").color)
     self.playerRoleLabel:SetFont("GOGmScoreboardPlayerName")
     self.playerRoleLabel:SetText(matchRole("user").name)
+    self.playerRoleLabel:SizeToContents()
+    self.playerRoleLabel:DockMargin(12, 0, 0, 0)
+    self.playerRoleLabel:Dock(RIGHT)
 
-    --- @class gogm_icon
     self.playerRoleIcon = vgui.Create("gogm_icon", self)
     self.playerRoleIcon:SetColor(matchRole("user").color)
     self.playerRoleIcon:SetIconMaterial("vgui/gogm_icons/assignment_ind.png")
+    self.playerRoleIcon:SetSize(24, 24)
+    self.playerRoleIcon:DockMargin(12, 0, 0, 0)
+    self.playerRoleIcon:Dock(RIGHT)
 end
 
 function PANEL:ReloadRow()
@@ -89,6 +117,7 @@ function PANEL:ReloadRow()
         end
     end
     self.playerName:SetText(self.player:Nick())
+    self.playerName:SizeToContents()
 
     local usgdat = matchRole(self.player:GetUserGroup())
     self.playerRoleIcon:SetColor(usgdat.color)
@@ -106,66 +135,6 @@ function PANEL:SetPlayer(ply)
     self:Think()
 end
 
-function PANEL:PerformLayout(w, h)
-    self:SetSize(w, 46)
-    self:DockPadding(6, 6, 6, 8)
-
-    self.playerAvatarBtn:SetSize(32, 32)
-    self.playerAvatarBtn:DockMargin(0, 0, 12, 0)
-    self.playerAvatarBtn:Dock(LEFT)
-    self.playerAvatar:SetSize(32, 32)
-    self.playerAvatar:Dock(FILL)
-
-    surface.SetFont(self.playerName:GetFont())
-    local pn_width, pn_height = surface.GetTextSize(self.playerName:GetText())
-    self.playerName:SetSize(pn_width, pn_height)
-    self.playerName:Dock(LEFT)
-
-    self.playerMuteBtn:SetSize(32, 33)
-    self.playerMuteBtn:DockMargin(12, 0, 0, 0)
-    self.playerMuteBtn:Dock(RIGHT)
-
-    surface.SetFont(self.playerPingLabel:GetFont())
-    local pp_width, pp_height = surface.GetTextSize(self.playerPingLabel:GetText())
-    self.playerPingLabel:SetSize(pp_width, pp_height)
-    self.playerPingLabel:DockMargin(12, 0, 0, 0)
-    self.playerPingLabel:Dock(RIGHT)
-
-    self.playerPingIcon:SetSize(24, 24)
-    self.playerPingIcon:DockMargin(12, 0, 0, 0)
-    self.playerPingIcon:Dock(RIGHT)
-
-    surface.SetFont(self.playerDeathcountLabel:GetFont())
-    local pdc_width, pdc_height = surface.GetTextSize(self.playerDeathcountLabel:GetText())
-    self.playerDeathcountLabel:SetSize(pdc_width, pdc_height)
-    self.playerDeathcountLabel:DockMargin(12, 0, 0, 0)
-    self.playerDeathcountLabel:Dock(RIGHT)
-
-    self.playerDeathcountIcon:SetSize(24, 24)
-    self.playerDeathcountIcon:DockMargin(12, 0, 0, 0)
-    self.playerDeathcountIcon:Dock(RIGHT)
-
-    surface.SetFont(self.playerKillcountLabel:GetFont())
-    local pkc_width, pkc_height = surface.GetTextSize(self.playerKillcountLabel:GetText())
-    self.playerKillcountLabel:SetSize(pkc_width, pkc_height)
-    self.playerKillcountLabel:DockMargin(12, 0, 0, 0)
-    self.playerKillcountLabel:Dock(RIGHT)
-
-    self.playerKillcountIcon:SetSize(24, 24)
-    self.playerKillcountIcon:DockMargin(12, 0, 0, 0)
-    self.playerKillcountIcon:Dock(RIGHT)
-
-    surface.SetFont(self.playerRoleLabel:GetFont())
-    local pr_width, pr_height = surface.GetTextSize(self.playerRoleLabel:GetText())
-    self.playerRoleLabel:SetSize(pr_width, pr_height)
-    self.playerRoleLabel:DockMargin(12, 0, 0, 0)
-    self.playerRoleLabel:Dock(RIGHT)
-
-    self.playerRoleIcon:SetSize(24, 24)
-    self.playerRoleIcon:DockMargin(12, 0, 0, 0)
-    self.playerRoleIcon:Dock(RIGHT)
-end
-
 function PANEL:Paint(w, h)
     draw.RoundedBox(8, 0, 0, w, h, HUDPAL.Dark2)
     draw.RoundedBox(8, 0, 0, w, h - 2, HUDPAL.Dark3)
@@ -178,36 +147,33 @@ function PANEL:Think()
         return
     end
 
-    local newName = self.player:Nick()
-    if (newName ~= self._oldName) then
-        self.playerName:SetText(newName)
-        self._oldName = newName
+    if (self.player:Nick() ~= self._oldName) then
+        self._oldName = self.player:Nick()
+        self.playerName:SetText(self._oldName)
     end
 
-    local newPing = self.player:Ping()
-    if (newPing ~= self._oldPing) then
-        self.playerPingLabel:SetText(hud_utils.leftpad(tostring(newPing), 3, "0"))
-        self._oldPing = newPing
+    if (self.player:Ping() ~= self._oldPing) then
+        self._oldPing = self.player:Ping()
+        self.playerPingLabel:SetText(hud_utils.leftpad(tostring(self._oldPing), 3, "0"))
     end
 
-    local newUsg = self.player:GetUserGroup()
-    if (newUsg ~= self._oldUserGroup) then
-        self.playerRoleIcon:SetColor(matchRole(newUsg).color)
-        self.playerRoleLabel:SetColor(matchRole(newUsg).color)
-        self.playerRoleLabel:SetText(matchRole(newUsg).name)
-        self._oldUserGroup = newUsg
+    if (self.player:GetUserGroup() ~= self._oldUserGroup) then
+        self._oldUserGroup = self.player:GetUserGroup()
+        self.playerRoleIcon:SetColor(matchRole(self._oldUserGroup).color)
+        self.playerRoleLabel:SetColor(matchRole(self._oldUserGroup).color)
+        self.playerRoleLabel:SetText(matchRole(self._oldUserGroup).name)
     end
 
-    local newDeathcount = self.player:Deaths()
-    if (newDeathcount ~= self._oldDeathcount) then
-        self.playerDeathcountLabel:SetText(tostring(newDeathcount))
-        self._oldDeathcount = newDeathcount
+    
+    if (self.player:Deaths() ~= self._oldDeathcount) then
+        self._oldDeathcount = self.player:Deaths()
+        self.playerDeathcountLabel:SetText(tostring(self._oldDeathcount))
     end
 
-    local newKillcount = self.player:Frags()
-    if (newKillcount ~= self._oldKillcount) then
-        self.playerKillcountLabel:SetText(tostring(newKillcount))
-        self._oldKillcount = newKillcount
+    
+    if (self.player:Frags() ~= self._oldKillcount) then
+        self._oldKillcount = self.player:Frags()
+        self.playerKillcountLabel:SetText(tostring(self._oldKillcount))
     end
 end
 

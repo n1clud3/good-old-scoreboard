@@ -22,6 +22,7 @@ local cvar_dim_intensity = CreateConVar("cl_goscrbrd_dim_intensity", "0.4", FCVA
 
 
 do -- Scoreboard root
+    --- @class gogm_scoreboard : Panel
     local PANEL = {}
 
     function PANEL:Init()
@@ -33,15 +34,10 @@ do -- Scoreboard root
         self.dimIntensity = cvar_dim_intensity
 
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
-        self.scoreboardFrameWidth = 900
-        self.scoreboardFrameHeight = 652
+        self.scoreboardFrame:SetSize(900, 652)
     end
 
     function PANEL:PerformLayout()
-        self:SetSize(scrW, scrH)
-        self:SetPos(0, 0)
-
-        self.scoreboardFrame:SetSize(self.scoreboardFrameWidth, self.scoreboardFrameHeight)
         self.scoreboardFrame:Center()
     end
 
@@ -80,7 +76,7 @@ do -- Scoreboard root
     end
 
     function PANEL:RemoveScoreboard()
-        for id,ply in ipairs(player.GetAll()) do
+        for _, ply in ipairs(player.GetAll()) do
             if (IsValid(ply.scorerow)) then ply.scorerow:Remove() end
         end
         self.scoreboardFrame:Remove()
@@ -111,6 +107,8 @@ local scoreboard
 hook.Add("ScoreboardShow", hook_name, function()
     if (not IsValid(scoreboard)) then
         scoreboard = vgui.Create("gogm_scoreboard")
+        scoreboard:SetSize(scrW, scrH)
+        scoreboard:SetPos(0, 0)
     end
 
     scoreboard:ShowScoreboard()

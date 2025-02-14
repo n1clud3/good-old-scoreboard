@@ -2,11 +2,15 @@
 local PANEL = {}
 
 function PANEL:Init()
+    self:DockPadding(30, 30, 30, 30)
+
     self.gap = 8
     self.playerCount = #player.GetAll()
 
-    --- @class gogm_scoreboard_title
     self.scoreboardTitle = vgui.Create("gogm_scoreboard_title", self)
+    self.scoreboardTitle:SetHeight(46)
+    self.scoreboardTitle:DockMargin(0, 0, 0, self.gap)
+    self.scoreboardTitle:Dock(TOP)
 
     self.playerRowsPanel = self:Add("DScrollPanel")
     self.playerRowsPanel:Dock(FILL)
@@ -21,16 +25,6 @@ function PANEL:Init()
     self.playerRowsPanel:AddItem(endrow)
 end
 
-function PANEL:PerformLayout(w, h)
-    self:DockPadding(30, 30, 30, 30)
-
-    self.scoreboardTitle:SetHeight(46)
-    self.scoreboardTitle:DockMargin(0, 0, 0, self.gap)
-    self.scoreboardTitle:Dock(TOP)
-
-    self.playerRowsPanel:SetSize(w, h - (46 + self.gap) * 2)
-end
-
 function PANEL:Paint(w, h)
     draw.RoundedBox(32, 0, 0, w, h, HUDPAL.Dark1)
 end
@@ -43,7 +37,6 @@ function PANEL:RebuildPlayerList()
     for _, ply in ipairs(player.GetAll()) do
         if (IsValid(ply.scorerow)) then continue end
 
-        --- @class gogm_scoreboard_row
         ply.scorerow = vgui.Create("gogm_scoreboard_row", ply.scorerow)
         ply.scorerow:SetPlayer(ply)
         ply.scorerow:DockMargin(0, 0, 0, self.gap)
@@ -54,7 +47,7 @@ function PANEL:RebuildPlayerList()
 end
 
 function PANEL:Think()
-    for id,ply in ipairs(player.GetAll()) do
+    for _, ply in ipairs(player.GetAll()) do
         if (IsValid(ply.scorerow)) then continue end
 
         ply.scorerow = vgui.Create("gogm_scoreboard_row", ply.scorerow)
