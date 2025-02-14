@@ -26,6 +26,11 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(w, h)
+    if (w < 900 or h < 652) then
+        surface.SetDrawColor(HUDPAL.Dark1)
+        surface.DrawRect(0, 0, w, h)
+        return
+    end
     draw.RoundedBox(32, 0, 0, w, h, HUDPAL.Dark1)
 end
 

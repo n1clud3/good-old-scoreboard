@@ -6,10 +6,6 @@ include("hud/gogm_hud_fonts.lua")
 
 local scrW, scrH = ScrW(), ScrH()
 
-hook.Add( "OnScreenSizeChanged", hook_name, function()
-    scrW, scrH = ScrW(), ScrH()
-end)
-
 include("hud/components/scoreboard_mute_btn.lua")
 include("hud/components/scoreboard_row.lua")
 include("hud/components/scoreboard_title.lua")
@@ -35,6 +31,9 @@ do -- Scoreboard root
 
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
         self.scoreboardFrame:SetSize(900, 652)
+        if (scrW < 900 or scrH < 652) then
+            self.scoreboardFrame:SetSize(scrW, scrH)
+        end
     end
 
     function PANEL:PerformLayout()
@@ -42,7 +41,7 @@ do -- Scoreboard root
     end
 
     function PANEL:Paint(w, h)
-        if (self.blurToggle) then -- draw blur
+        if (self.blurToggle or scrW > 900 or scrH > 652) then -- draw blur
             surface.SetMaterial(self.matBlurScreen)
             surface.SetDrawColor(255, 255, 255)
 
@@ -57,7 +56,7 @@ do -- Scoreboard root
         draw.NoTexture() -- reset blur material
 
         -- dim background
-        if (self.dimToggle) then
+        if (self.dimToggle or scrW > 900 or scrH > 652) then
             surface.SetDrawColor(0, 0, 0,255 * self.dimIntensity)
             surface.DrawRect(0, 0, w, h)
         end
@@ -127,6 +126,11 @@ local function reloadScoreboard()
     end
     print("Scoreboard reloaded.")
 end
+
+hook.Add( "OnScreenSizeChanged", hook_name, function()
+    reloadScoreboard()
+    scrW, scrH = ScrW(), ScrH()
+end)
 
 cvars.AddChangeCallback("cl_goscrbrd_blur", function(cvar, oldV, newV)
     cvar_blur_toggle = tobool(newV)
