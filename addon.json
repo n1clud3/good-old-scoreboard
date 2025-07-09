@@ -7,6 +7,9 @@
         "img/*",
         ".github/*",
         ".vscode/*",
-        ".git/*"
+        ".git/*",
+        "LICENSE",
+        "README.md",
+        ".gitattributes"
 	]
 }
