@@ -2,18 +2,23 @@
 
 A custom scoreboard for Garry's Mod.
 Initially, it was designed for a cool project,
-but it was quickly abandoned because of *infinite planning hell* and
-internal disagreements.
-After deciding, that letting the code rot was a bad idea,
-I released the scoreboard to the public.
+but it was quickly abandoned because of
+*infinite planning hell* and internal disagreements.
+After deciding, that letting the code rot was a bad
+idea, I released the scoreboard to the public.
+
+![preview1](.previews/preview1.jpeg)
+![preview2](.previews/preview2.jpeg)
 
 ## Features
 
 - Easy custom role setup
 - Customizable background dim and blur
 - Dynamic color system
+- Translated into English, Ukrainian and Slovak
 
-Run `cvarlist cl_goscrbrd` in game console to list all available commands and customization options.
+Run `cvarlist cl_goscrbrd` in game console to list
+all available commands and customization options.
 
 ## Configuration
 
