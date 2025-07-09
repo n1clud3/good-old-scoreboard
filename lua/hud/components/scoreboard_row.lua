@@ -33,12 +33,6 @@ function PANEL:Init()
     self.playerAvatar:SetSize(32, 32)
     self.playerAvatar:Dock(FILL)
 
-    self.playerName = vgui.Create("DLabel", self)
-    self.playerName:SetColor(HUDPAL.White)
-    self.playerName:SetFont("GOGmScoreboardPlayerName")
-    self.playerName:SizeToContents()
-    self.playerName:Dock(LEFT)
-
     self.playerMuteBtn = vgui.Create("gogm_scoreboard_mute_btn", self)
     self.playerMuteBtn:SetPlayer(self.player)
     self.playerMuteBtn:SetSize(32, 33)
@@ -104,6 +98,12 @@ function PANEL:Init()
     self.playerRoleIcon:SetSize(24, 24)
     self.playerRoleIcon:DockMargin(12, 0, 0, 0)
     self.playerRoleIcon:Dock(RIGHT)
+
+    self.playerName = vgui.Create("DLabel", self)
+    self.playerName:SetColor(HUDPAL.White)
+    self.playerName:SetFont("GOGmScoreboardPlayerName")
+    self.playerName:SizeToContents()
+    self.playerName:Dock(FILL)
 end
 
 function PANEL:ReloadRow()
@@ -169,12 +169,14 @@ function PANEL:Think()
     if (self.player:Deaths() ~= self._oldDeathcount) then
         self._oldDeathcount = self.player:Deaths()
         self.playerDeathcountLabel:SetText(tostring(self._oldDeathcount))
+        self.playerDeathcountLabel:SizeToContents()
     end
 
     
     if (self.player:Frags() ~= self._oldKillcount) then
         self._oldKillcount = self.player:Frags()
         self.playerKillcountLabel:SetText(tostring(self._oldKillcount))
+        self.playerKillcountLabel:SizeToContents()
     end
 end
 
