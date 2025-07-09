@@ -1,0 +1,12 @@
+{
+	"title": "Good Old Scoreboard",
+	"type": "Effects",
+	"tags": [ "fun" ],
+	"ignore": [
+		"docs/*",
+        "img/*",
+        ".github/*",
+        ".vscode/*",
+        ".git/*"
+	]
+}

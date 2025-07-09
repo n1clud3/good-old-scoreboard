@@ -7,8 +7,8 @@ but it was quickly abandoned because of
 After deciding, that letting the code rot was a bad
 idea, I released the scoreboard to the public.
 
-![preview1](.previews/preview1.jpeg)
-![preview2](.previews/preview2.jpeg)
+![preview1](./img/preview1.jpeg)
+![preview2](./img/preview2.jpeg)
 
 ## Features
 
