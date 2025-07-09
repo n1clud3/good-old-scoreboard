@@ -15,7 +15,7 @@ idea, I released the scoreboard to the public.
 - Easy custom role setup
 - Customizable background dim and blur
 - Dynamic color system
-- Translated into English, Ukrainian and Slovak
+- Translated into English, Ukrainian, Slovak, Turkish
 
 Run `cvarlist cl_goscrbrd` in game console to list
 all available commands and customization options.
