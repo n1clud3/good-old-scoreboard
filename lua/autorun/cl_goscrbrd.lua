@@ -17,6 +17,7 @@ local no_autoload_scripts = {
 }
 
 if SERVER then
+    resource.AddWorkshop("3368132886")
     for _,script in ipairs(load_scripts) do
         AddCSLuaFile(script)
     end
