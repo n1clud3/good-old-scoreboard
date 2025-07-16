@@ -10,6 +10,13 @@ local function matchRole(role)
     return HUDROLES.roles[role] or HUDROLES.roles["default"]
 end
 
+---Check if the player is in build mode
+---@param ply Player
+---@return boolean
+local function isInBuildMode(ply)
+    return ply:GetNWBool("_Kyle_Buildmode", false) or (ply.InBuildMode ~= nil and ply:InBuildMode())
+end
+
 function PANEL:Init()
     self:DockPadding(6, 6, 6, 8)
     self:SetHeight(46)
@@ -32,6 +39,26 @@ function PANEL:Init()
     self.playerAvatar:SetMouseInputEnabled(false)
     self.playerAvatar:SetSize(32, 32)
     self.playerAvatar:Dock(FILL)
+
+    self.playerBuildModeIcon = vgui.Create("gogm_icon", self)
+    self.playerBuildModeIcon:SetColor(HUDPAL.Light1)
+    self.playerBuildModeIcon:SetIconMaterial("vgui/gogm_icons/handyman.png")
+    self.playerBuildModeIcon:DockMargin(0, 0, 12, 0)
+    self.playerBuildModeIcon:Dock(LEFT)
+    self._oldBuildMode = isInBuildMode(self.player)
+    if (self._oldBuildMode) then
+        self.playerBuildModeIcon:SetSize(24, 24)
+        self.playerBuildModeIcon:DockMargin(0, 0, 12, 0)
+    else
+        self.playerBuildModeIcon:SetSize(0, 0)
+        self.playerBuildModeIcon:DockMargin(0, 0, 0, 0)
+    end
+
+    self.playerName = vgui.Create("DLabel", self)
+    self.playerName:SetColor(HUDPAL.White)
+    self.playerName:SetFont("GOGmScoreboardPlayerName")
+    self.playerName:SizeToContents()
+    self.playerName:Dock(FILL)
 
     self.playerMuteBtn = vgui.Create("gogm_scoreboard_mute_btn", self)
     self.playerMuteBtn:SetPlayer(self.player)
@@ -98,12 +125,6 @@ function PANEL:Init()
     self.playerRoleIcon:SetSize(24, 24)
     self.playerRoleIcon:DockMargin(12, 0, 0, 0)
     self.playerRoleIcon:Dock(RIGHT)
-
-    self.playerName = vgui.Create("DLabel", self)
-    self.playerName:SetColor(HUDPAL.White)
-    self.playerName:SetFont("GOGmScoreboardPlayerName")
-    self.playerName:SizeToContents()
-    self.playerName:Dock(FILL)
 end
 
 function PANEL:ReloadRow()
@@ -165,18 +186,27 @@ function PANEL:Think()
         self.playerRoleLabel:SizeToContents()
     end
 
-    
     if (self.player:Deaths() ~= self._oldDeathcount) then
         self._oldDeathcount = self.player:Deaths()
         self.playerDeathcountLabel:SetText(tostring(self._oldDeathcount))
         self.playerDeathcountLabel:SizeToContents()
     end
 
-    
     if (self.player:Frags() ~= self._oldKillcount) then
         self._oldKillcount = self.player:Frags()
         self.playerKillcountLabel:SetText(tostring(self._oldKillcount))
         self.playerKillcountLabel:SizeToContents()
+    end
+
+    if (isInBuildMode(self.player) ~= self._oldBuildMode) then
+        self._oldBuildMode = isInBuildMode(self.player)
+        if (self._oldBuildMode) then
+            self.playerBuildModeIcon:SetSize(24, 24)
+            self.playerBuildModeIcon:DockMargin(0, 0, 12, 0)
+        else
+            self.playerBuildModeIcon:SetSize(0, 0)
+            self.playerBuildModeIcon:DockMargin(0, 0, 0, 0)
+        end
     end
 end
 

@@ -16,6 +16,7 @@ idea, I released the scoreboard to the public.
 - Customizable background dim and blur
 - Dynamic color system
 - Translated into English, Ukrainian, Slovak, Turkish
+- Build mode support ([Kyle ULX Buildmode](https://steamcommunity.com/sharedfiles/filedetails/?id=1308900979) and [Pika ULX Buildmode](https://steamcommunity.com/sharedfiles/filedetails/?id=3010826647))
 
 Run `cvarlist cl_goscrbrd` in game console to list
 all available commands and customization options.
