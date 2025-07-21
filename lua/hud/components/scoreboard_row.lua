@@ -173,6 +173,15 @@ function PANEL:Think()
         self.playerName:SetText(self._oldName)
     end
 
+    if (self.player:Alive() ~= self._oldAlive) then
+        self._oldAlive = self.player:Alive()
+        if (self._oldAlive) then
+            self.playerName:SetText(self._oldName)
+        else
+            self.playerName:SetText(self._oldName .. " (" .. language.GetPhrase("goscrbrd.playerdead") .. ")")
+        end
+    end
+
     if (self.player:Ping() ~= self._oldPing) then
         self._oldPing = self.player:Ping()
         self.playerPingLabel:SetText(hud_utils.leftpad(tostring(self._oldPing), 3, "0"))
