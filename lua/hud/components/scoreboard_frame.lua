@@ -13,6 +13,16 @@ function PANEL:Init()
     self.scoreboardTitle:Dock(TOP)
 
     self.playerRowsPanel = self:Add("DScrollPanel")
+
+    local sbar = self.playerRowsPanel:GetVBar()
+    function sbar:Paint(w, h) end
+    function sbar.btnUp:Paint(w, h) end
+    function sbar.btnDown:Paint(w, h) end
+    function sbar.btnGrip:Paint(w, h)
+        draw.RoundedBox(100, 4, 4, w - 8, h - 8, HUDPAL.Dark2)
+        draw.RoundedBox(100, 4, 4, w - 8, h - 10, HUDPAL.Dark3)
+    end
+
     self.playerRowsPanel:Dock(FILL)
 
     local endrow = vgui.Create("DLabel")
