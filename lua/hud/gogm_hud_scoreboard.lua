@@ -2,20 +2,24 @@ local surface = surface
 
 local hook_name = "good_old_scoreboard"
 
-include("hud/gogm_hud_fonts.lua")
+local blur_toggle = CreateClientConVar("cl_goscrbrd_blur", "1", true, false, "Toggle the scoreboard background blur")
+local blur_intensity = CreateClientConVar("cl_goscrbrd_blur_intensity", "3.0", true, false, "Intensity of the background blur", 0.0)
+local dim_toggle = CreateClientConVar("cl_goscrbrd_dim", "1", true, false, "Scoreboard background dim toggle")
+local dim_intensity = CreateClientConVar("cl_goscrbrd_dim_intensity", "0.4", true, false, "Intensity of the background dim", 0.0, 1.0)
 
-local scrW, scrH = ScrW(), ScrH()
+local frame_width = CreateClientConVar("cl_goscrbrd_width", "900", true, false, "Width of the scoreboard")
+local frame_height = CreateClientConVar("cl_goscrbrd_height", "652", true, false, "Height of the scoreboard")
+
+local frame_centered = CreateClientConVar("cl_goscrbrd_centered", "1", true, false, "Whether the scoreboard should be centered")
+local frame_pos_x = CreateClientConVar("cl_goscrbrd_pos_x", "20", true, false, "X position of the scoreboard", 0)
+local frame_pos_y = CreateClientConVar("cl_goscrbrd_pos_y", "20", true, false, "Y position of the scoreboard", 0)
+
+include("hud/gogm_hud_fonts.lua")
 
 include("hud/components/scoreboard_mute_btn.lua")
 include("hud/components/scoreboard_row.lua")
 include("hud/components/scoreboard_title.lua")
 include("hud/components/scoreboard_frame.lua")
-
-local cvar_blur_toggle = CreateConVar("cl_goscrbrd_blur", "1", FCVAR_ARCHIVE, "Toggle the scoreboard background blur"):GetBool()
-local cvar_blur_intensity = CreateConVar("cl_goscrbrd_blur_intensity", "3.0", FCVAR_ARCHIVE, "Intensity of the background blur", 0.0):GetFloat()
-local cvar_dim_toggle = CreateConVar("cl_goscrbrd_dim", "1", FCVAR_ARCHIVE, "Scoreboard background dim toggle"):GetBool()
-local cvar_dim_intensity = CreateConVar("cl_goscrbrd_dim_intensity", "0.4", FCVAR_ARCHIVE, "Intensity of the background dim", 0.0, 1.0):GetFloat()
-
 
 do -- Scoreboard root
     --- @class gogm_scoreboard : Panel
@@ -23,30 +27,30 @@ do -- Scoreboard root
 
     function PANEL:Init()
         self.matBlurScreen = Material("pp/blurscreen")
-        self.blurToggle = cvar_blur_toggle
-        self.blurFactor = cvar_blur_intensity
-
-        self.dimToggle = cvar_dim_toggle
-        self.dimIntensity = cvar_dim_intensity
-
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
-        self.scoreboardFrame:SetSize(900, 652)
-        if (scrW < 900 or scrH < 652) then
-            self.scoreboardFrame:SetSize(scrW, scrH)
+    end
+
+    function PANEL:PerformLayout(w, h)
+        self.scoreboardFrame:SetSize(frame_width:GetInt(), frame_height:GetInt())
+        if (w <= self.scoreboardFrame:GetWide() or h <= self.scoreboardFrame:GetTall()) then
+            self.scoreboardFrame:SetSize(w, h)
+        end
+
+        if frame_centered:GetBool() then
+            self.scoreboardFrame:Center()
+        else
+            self.scoreboardFrame:SetPos(frame_pos_x:GetFloat(), frame_pos_y:GetFloat())
         end
     end
 
-    function PANEL:PerformLayout()
-        self.scoreboardFrame:Center()
-    end
-
     function PANEL:Paint(w, h)
-        if (self.blurToggle or scrW > 900 or scrH > 652) then -- draw blur
+        -- draw blur
+        if (blur_toggle:GetBool() and (w > self.scoreboardFrame:GetWide() and h > self.scoreboardFrame:GetTall())) then
             surface.SetMaterial(self.matBlurScreen)
             surface.SetDrawColor(255, 255, 255)
 
             for i = 0.33, 1, 0.33 do
-                self.matBlurScreen:SetFloat("$blur", self.blurFactor * i)
+                self.matBlurScreen:SetFloat("$blur", blur_intensity:GetFloat() * i)
                 self.matBlurScreen:Recompute()
                 render.UpdateScreenEffectTexture()
                 surface.DrawTexturedRect(0, 0, w, h)
@@ -56,8 +60,8 @@ do -- Scoreboard root
         draw.NoTexture() -- reset blur material
 
         -- dim background
-        if (self.dimToggle or scrW > 900 or scrH > 652) then
-            surface.SetDrawColor(0, 0, 0,255 * self.dimIntensity)
+        if (dim_toggle:GetBool() and (w > self.scoreboardFrame:GetWide() and h > self.scoreboardFrame:GetTall())) then
+            surface.SetDrawColor(0, 0, 0, 255 * dim_intensity:GetFloat())
             surface.DrawRect(0, 0, w, h)
         end
     end
@@ -82,32 +86,21 @@ do -- Scoreboard root
         self:Remove()
     end
 
-    function PANEL:SetBlurToggle(val)
-        self.blurToggle = val
-    end
-
-    function PANEL:SetBlurFactor(fact)
-        self.blurFactor = fact
-    end
-
-    function PANEL:SetDimToggle(val)
-        self.dimToggle = val
-    end
-
-    function PANEL:SetDimIntensity(fact)
-        self.dimIntensity = fact
-    end
-
     vgui.Register("gogm_scoreboard", PANEL)
 end
 
 local scoreboard
 
+local function setupScoreboard()
+        scoreboard = vgui.Create("gogm_scoreboard")
+        scoreboard:SetSize(ScrW(), ScrH())
+        scoreboard:SetPos(0, 0)
+        scoreboard:Hide()
+end
+
 hook.Add("ScoreboardShow", hook_name, function()
     if (not IsValid(scoreboard)) then
-        scoreboard = vgui.Create("gogm_scoreboard")
-        scoreboard:SetSize(scrW, scrH)
-        scoreboard:SetPos(0, 0)
+        setupScoreboard()
     end
 
     scoreboard:ShowScoreboard()
@@ -123,41 +116,14 @@ end)
 local function reloadScoreboard()
     if (IsValid(scoreboard)) then
         scoreboard:RemoveScoreboard()
+        setupScoreboard()
     end
     print("Scoreboard reloaded.")
 end
 
 hook.Add( "OnScreenSizeChanged", hook_name, function()
+    include("hud/gogm_hud_fonts.lua")
     reloadScoreboard()
-    scrW, scrH = ScrW(), ScrH()
-end)
-
-cvars.AddChangeCallback("cl_goscrbrd_blur", function(cvar, oldV, newV)
-    cvar_blur_toggle = tobool(newV)
-    if (IsValid(scoreboard)) then
-        scoreboard:SetBlurToggle(cvar_blur_toggle)
-    end
-end)
-
-cvars.AddChangeCallback("cl_goscrbrd_blur_intensity", function(cvar, oldV, newV)
-    cvar_blur_intensity = tonumber(newV) or 3.0
-    if (IsValid(scoreboard)) then
-        scoreboard:SetBlurFactor(newV)
-    end
-end)
-
-cvars.AddChangeCallback("cl_goscrbrd_dim", function(cvar, oldV, newV)
-    cvar_dim_toggle = tobool(newV)
-    if (IsValid(scoreboard)) then
-        scoreboard:SetDimToggle(cvar_dim_toggle)
-    end
-end)
-
-cvars.AddChangeCallback("cl_goscrbrd_dim_intensity", function(cvar, oldV, newV)
-    cvar_dim_intensity = tonumber(newV) or 0.4
-    if (IsValid(scoreboard)) then
-        scoreboard:SetDimIntensity(cvar_dim_intensity)
-    end
 end)
 
 concommand.Add("cl_goscrbrd_reload", reloadScoreboard)
