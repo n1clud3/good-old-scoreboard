@@ -14,6 +14,7 @@ idea, I released the scoreboard to the public.
 
 - Easy custom role setup
 - Customizable background dim and blur
+- Customizable size and position
 - Dynamic color system
 - Translated into English, Ukrainian, Slovak, Turkish
 - Build mode support ([Kyle ULX Buildmode](https://steamcommunity.com/sharedfiles/filedetails/?id=1308900979) and [Pika ULX Buildmode](https://steamcommunity.com/sharedfiles/filedetails/?id=3010826647))
