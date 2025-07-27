@@ -14,6 +14,8 @@ local frame_centered = CreateClientConVar("cl_goscrbrd_centered", "1", true, fal
 local frame_pos_x = CreateClientConVar("cl_goscrbrd_pos_x", "20", true, false, "X position of the scoreboard", 0)
 local frame_pos_y = CreateClientConVar("cl_goscrbrd_pos_y", "20", true, false, "Y position of the scoreboard", 0)
 
+local cursor_autolock = CreateClientConVar("cl_goscrbrd_cursor_autolock", "1", true, false, "Should the cursor be locked to the scoreboard upon opening it")
+
 include("hud/gogm_hud_fonts.lua")
 
 include("hud/components/scoreboard_mute_btn.lua")
@@ -114,7 +116,11 @@ hook.Add("ScoreboardShow", hook_name, function()
     end
 
     scoreboard:ShowScoreboard()
-    hook.Add("HUDPaint", hook_name, enableMouseHook)
+    if not cursor_autolock:GetBool() then
+        hook.Add("HUDPaint", hook_name, enableMouseHook)
+    else
+        scoreboard:MakePopup()
+    end
     return true
 end)
 
