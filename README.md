@@ -7,13 +7,11 @@ but it was quickly abandoned because of
 After deciding, that letting the code rot was a bad
 idea, I released the scoreboard to the public.
 
-![preview1](./img/preview1.jpeg)
-![preview2](./img/preview2.jpeg)
-
 ## Features
 
 - Easy custom role setup
 - Customizable background dim and blur
+- Customizable size and position
 - Dynamic color system
 - Translated into English, Ukrainian, Slovak, Turkish
 - Build mode support ([Kyle ULX Buildmode](https://steamcommunity.com/sharedfiles/filedetails/?id=1308900979) and [Pika ULX Buildmode](https://steamcommunity.com/sharedfiles/filedetails/?id=3010826647))
@@ -33,3 +31,13 @@ See the [docs](./docs/) for more information.
 ## License
 
 [LICENSE](./LICENSE)
+
+## Screenshots
+
+![Preview 1](./img/preview1.jpg)
+![Preview 2](./img/preview2.jpg)
+![Preview 3](./img/preview3.jpg)
+![Preview 4](./img/preview4.jpg)
+![Preview 5](./img/preview5.jpg)
+![Preview 6](./img/preview6.jpg)
+
