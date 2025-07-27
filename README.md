@@ -7,9 +7,6 @@ but it was quickly abandoned because of
 After deciding, that letting the code rot was a bad
 idea, I released the scoreboard to the public.
 
-![preview1](./img/preview1.jpeg)
-![preview2](./img/preview2.jpeg)
-
 ## Features
 
 - Easy custom role setup
@@ -34,3 +31,13 @@ See the [docs](./docs/) for more information.
 ## License
 
 [LICENSE](./LICENSE)
+
+## Screenshots
+
+![Preview 1](./img/preview1.jpg)
+![Preview 2](./img/preview2.jpg)
+![Preview 3](./img/preview3.jpg)
+![Preview 4](./img/preview4.jpg)
+![Preview 5](./img/preview5.jpg)
+![Preview 6](./img/preview6.jpg)
+
