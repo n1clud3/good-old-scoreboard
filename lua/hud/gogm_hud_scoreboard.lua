@@ -76,22 +76,6 @@ do -- Scoreboard root
         self:Remove()
     end
 
-    function PANEL:SetBlurToggle(val)
-        self.blurToggle = val
-    end
-
-    function PANEL:SetBlurFactor(fact)
-        self.blurFactor = fact
-    end
-
-    function PANEL:SetDimToggle(val)
-        self.dimToggle = val
-    end
-
-    function PANEL:SetDimIntensity(fact)
-        self.dimIntensity = fact
-    end
-
     vgui.Register("gogm_scoreboard", PANEL)
 end
 
