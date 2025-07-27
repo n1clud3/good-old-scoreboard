@@ -120,6 +120,7 @@ local function reloadScoreboard()
 end
 
 hook.Add( "OnScreenSizeChanged", hook_name, function()
+    include("hud/gogm_hud_fonts.lua")
     reloadScoreboard()
 end)
 
