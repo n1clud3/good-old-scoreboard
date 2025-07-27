@@ -14,6 +14,8 @@ local frame_centered = CreateClientConVar("cl_goscrbrd_centered", "1", true, fal
 local frame_pos_x = CreateClientConVar("cl_goscrbrd_pos_x", "20", true, false, "X position of the scoreboard", 0)
 local frame_pos_y = CreateClientConVar("cl_goscrbrd_pos_y", "20", true, false, "Y position of the scoreboard", 0)
 
+local cursor_autolock = CreateClientConVar("cl_goscrbrd_cursor_autolock", "1", true, false, "Should the cursor be locked to the scoreboard upon opening it")
+
 include("hud/gogm_hud_fonts.lua")
 
 include("hud/components/scoreboard_mute_btn.lua")
@@ -28,6 +30,7 @@ do -- Scoreboard root
     function PANEL:Init()
         self.matBlurScreen = Material("pp/blurscreen")
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
+        self.scoreboardFrame:Show()
     end
 
     function PANEL:PerformLayout(w, h)
@@ -68,13 +71,11 @@ do -- Scoreboard root
 
     function PANEL:ShowScoreboard()
         self:Show()
-        self:MakePopup()
-        self:SetKeyboardInputEnabled(false)
-        self.scoreboardFrame:Show()
     end
 
     function PANEL:HideScoreboard()
-        self.scoreboardFrame:Hide()
+        self:SetMouseInputEnabled(false)
+        self:SetKeyboardInputEnabled(false)
         self:Hide()
     end
 
@@ -89,7 +90,8 @@ do -- Scoreboard root
     vgui.Register("gogm_scoreboard", PANEL)
 end
 
-local scoreboard
+---@class gogm_scoreboard
+local scoreboard = nil
 
 local function setupScoreboard()
         scoreboard = vgui.Create("gogm_scoreboard")
@@ -98,23 +100,40 @@ local function setupScoreboard()
         scoreboard:Hide()
 end
 
+local function enableMouseHook()
+    if not input.IsMouseDown(MOUSE_RIGHT) then return end
+    if not scoreboard or not IsValid(scoreboard) then return end
+
+    scoreboard:MakePopup()
+    scoreboard:SetKeyboardInputEnabled(false)
+
+    hook.Remove("HUDPaint", hook_name)
+end
+
 hook.Add("ScoreboardShow", hook_name, function()
-    if (not IsValid(scoreboard)) then
+    if not scoreboard or not IsValid(scoreboard) then
         setupScoreboard()
     end
 
     scoreboard:ShowScoreboard()
+    if not cursor_autolock:GetBool() then
+        hook.Add("HUDPaint", hook_name, enableMouseHook)
+    else
+        scoreboard:MakePopup()
+        scoreboard:SetKeyboardInputEnabled(false)
+    end
     return true
 end)
 
 hook.Add("ScoreboardHide", hook_name, function()
-    if (IsValid(scoreboard)) then
+    if scoreboard and IsValid(scoreboard) then
         scoreboard:HideScoreboard()
     end
+    hook.Remove("HUDPaint", hook_name)
 end)
 
 local function reloadScoreboard()
-    if (IsValid(scoreboard)) then
+    if scoreboard and IsValid(scoreboard) then
         scoreboard:RemoveScoreboard()
         setupScoreboard()
     end
