@@ -28,6 +28,7 @@ do -- Scoreboard root
     function PANEL:Init()
         self.matBlurScreen = Material("pp/blurscreen")
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
+        self.scoreboardFrame:Show()
     end
 
     function PANEL:PerformLayout(w, h)
@@ -68,13 +69,12 @@ do -- Scoreboard root
 
     function PANEL:ShowScoreboard()
         self:Show()
-        self:MakePopup()
+        self:SetMouseInputEnabled(false)
         self:SetKeyboardInputEnabled(false)
-        self.scoreboardFrame:Show()
     end
 
     function PANEL:HideScoreboard()
-        self.scoreboardFrame:Hide()
+        
         self:Hide()
     end
 
@@ -89,7 +89,8 @@ do -- Scoreboard root
     vgui.Register("gogm_scoreboard", PANEL)
 end
 
-local scoreboard
+---@class gogm_scoreboard
+local scoreboard = nil
 
 local function setupScoreboard()
         scoreboard = vgui.Create("gogm_scoreboard")
@@ -98,23 +99,34 @@ local function setupScoreboard()
         scoreboard:Hide()
 end
 
+local function enableMouseHook()
+    if not input.IsMouseDown(MOUSE_RIGHT) then return end
+    if not scoreboard or not IsValid(scoreboard) then return end
+
+    scoreboard:MakePopup()
+
+    hook.Remove("HUDPaint", hook_name)
+end
+
 hook.Add("ScoreboardShow", hook_name, function()
-    if (not IsValid(scoreboard)) then
+    if not scoreboard or not IsValid(scoreboard) then
         setupScoreboard()
     end
 
     scoreboard:ShowScoreboard()
+    hook.Add("HUDPaint", hook_name, enableMouseHook)
     return true
 end)
 
 hook.Add("ScoreboardHide", hook_name, function()
-    if (IsValid(scoreboard)) then
+    if scoreboard and IsValid(scoreboard) then
         scoreboard:HideScoreboard()
     end
+    hook.Remove("HUDPaint", hook_name)
 end)
 
 local function reloadScoreboard()
-    if (IsValid(scoreboard)) then
+    if scoreboard and IsValid(scoreboard) then
         scoreboard:RemoveScoreboard()
         setupScoreboard()
     end
