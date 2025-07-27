@@ -71,12 +71,11 @@ do -- Scoreboard root
 
     function PANEL:ShowScoreboard()
         self:Show()
-        self:SetMouseInputEnabled(false)
-        self:SetKeyboardInputEnabled(false)
     end
 
     function PANEL:HideScoreboard()
-        
+        self:SetMouseInputEnabled(false)
+        self:SetKeyboardInputEnabled(false)
         self:Hide()
     end
 
@@ -106,6 +105,7 @@ local function enableMouseHook()
     if not scoreboard or not IsValid(scoreboard) then return end
 
     scoreboard:MakePopup()
+    scoreboard:SetKeyboardInputEnabled(false)
 
     hook.Remove("HUDPaint", hook_name)
 end
@@ -120,6 +120,7 @@ hook.Add("ScoreboardShow", hook_name, function()
         hook.Add("HUDPaint", hook_name, enableMouseHook)
     else
         scoreboard:MakePopup()
+        scoreboard:SetKeyboardInputEnabled(false)
     end
     return true
 end)
