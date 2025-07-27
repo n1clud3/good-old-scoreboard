@@ -1,3 +1,6 @@
+local frame_width = GetConVar("cl_goscrbrd_width")
+local frame_height = GetConVar("cl_goscrbrd_height")
+
 --- @class gogm_scoreboard_frame : Panel
 local PANEL = {}
 
@@ -36,7 +39,7 @@ function PANEL:Init()
 end
 
 function PANEL:Paint(w, h)
-    if (w < 900 or h < 652) then
+    if (w < frame_width:GetInt() or h < frame_height:GetInt()) then
         surface.SetDrawColor(HUDPAL.Dark1)
         surface.DrawRect(0, 0, w, h)
         return

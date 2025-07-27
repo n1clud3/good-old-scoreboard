@@ -2,18 +2,20 @@ local surface = surface
 
 local hook_name = "good_old_scoreboard"
 
+local blur_toggle = CreateClientConVar("cl_goscrbrd_blur", "1", true, false, "Toggle the scoreboard background blur")
+local blur_intensity = CreateClientConVar("cl_goscrbrd_blur_intensity", "3.0", true, false, "Intensity of the background blur", 0.0)
+local dim_toggle = CreateClientConVar("cl_goscrbrd_dim", "1", true, false, "Scoreboard background dim toggle")
+local dim_intensity = CreateClientConVar("cl_goscrbrd_dim_intensity", "0.4", true, false, "Intensity of the background dim", 0.0, 1.0)
+
+local frame_width = CreateClientConVar("cl_goscrbrd_width", "900", true, false, "Width of the scoreboard")
+local frame_height = CreateClientConVar("cl_goscrbrd_height", "652", true, false, "Height of the scoreboard")
+
 include("hud/gogm_hud_fonts.lua")
 
 include("hud/components/scoreboard_mute_btn.lua")
 include("hud/components/scoreboard_row.lua")
 include("hud/components/scoreboard_title.lua")
 include("hud/components/scoreboard_frame.lua")
-
-local blur_toggle = CreateClientConVar("cl_goscrbrd_blur", "1", true, false, "Toggle the scoreboard background blur")
-local blur_intensity = CreateClientConVar("cl_goscrbrd_blur_intensity", "3.0", true, false, "Intensity of the background blur", 0.0)
-local dim_toggle = CreateClientConVar("cl_goscrbrd_dim", "1", true, false, "Scoreboard background dim toggle")
-local dim_intensity = CreateClientConVar("cl_goscrbrd_dim_intensity", "0.4", true, false, "Intensity of the background dim", 0.0, 1.0)
-
 
 do -- Scoreboard root
     --- @class gogm_scoreboard : Panel
@@ -22,13 +24,10 @@ do -- Scoreboard root
     function PANEL:Init()
         self.matBlurScreen = Material("pp/blurscreen")
         self.scoreboardFrame = vgui.Create("gogm_scoreboard_frame", self)
-
-        self.scoreboardFrameWidth = 900
-        self.scoreboardFrameHeight = 652
     end
 
     function PANEL:PerformLayout(w, h)
-        self.scoreboardFrame:SetSize(self.scoreboardFrameWidth, self.scoreboardFrameHeight)
+        self.scoreboardFrame:SetSize(frame_width:GetInt(), frame_height:GetInt())
         if (w <= self.scoreboardFrame:GetWide() or h <= self.scoreboardFrame:GetTall()) then
             self.scoreboardFrame:SetSize(w, h)
         end
@@ -77,11 +76,6 @@ do -- Scoreboard root
         end
         self.scoreboardFrame:Remove()
         self:Remove()
-    end
-
-    function PANEL:SetScoreboardFrameSize(w, h)
-        self.scoreboardFrameWidth = w
-        self.scoreboardFrameHeight = h
     end
 
     vgui.Register("gogm_scoreboard", PANEL)
