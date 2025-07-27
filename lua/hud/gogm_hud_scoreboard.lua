@@ -10,6 +10,10 @@ local dim_intensity = CreateClientConVar("cl_goscrbrd_dim_intensity", "0.4", tru
 local frame_width = CreateClientConVar("cl_goscrbrd_width", "900", true, false, "Width of the scoreboard")
 local frame_height = CreateClientConVar("cl_goscrbrd_height", "652", true, false, "Height of the scoreboard")
 
+local frame_centered = CreateClientConVar("cl_goscrbrd_centered", "1", true, false, "Whether the scoreboard should be centered")
+local frame_pos_x = CreateClientConVar("cl_goscrbrd_pos_x", "20", true, false, "X position of the scoreboard", 0)
+local frame_pos_y = CreateClientConVar("cl_goscrbrd_pos_y", "20", true, false, "Y position of the scoreboard", 0)
+
 include("hud/gogm_hud_fonts.lua")
 
 include("hud/components/scoreboard_mute_btn.lua")
@@ -32,7 +36,11 @@ do -- Scoreboard root
             self.scoreboardFrame:SetSize(w, h)
         end
 
-        self.scoreboardFrame:Center()
+        if frame_centered:GetBool() then
+            self.scoreboardFrame:Center()
+        else
+            self.scoreboardFrame:SetPos(frame_pos_x:GetFloat(), frame_pos_y:GetFloat())
+        end
     end
 
     function PANEL:Paint(w, h)
