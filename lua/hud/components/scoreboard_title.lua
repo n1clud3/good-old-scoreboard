@@ -1,5 +1,6 @@
 local hud_utils = include("hud/gogm_hud_util.lua")
 include("hud/components/icon.lua")
+include("hud/components/scoreboard_settings_btn.lua")
 
 --- @class gogm_scoreboard_title : Panel
 local PANEL = {}
@@ -17,6 +18,11 @@ function PANEL:Init()
     self.title:SetText(GetHostName())
     self.title:SizeToContents()
     self.title:Dock(LEFT)
+
+    self.settingsButton = vgui.Create("gogm_scoreboard_settings_btn", self)
+    self.settingsButton:SetSize(32, 33)
+    self.settingsButton:DockMargin(12, 0, 0, 0)
+    self.settingsButton:Dock(RIGHT)
 
     self.playerCount = 0
 

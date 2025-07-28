@@ -10,6 +10,7 @@ local no_autoload_scripts = {
 
     -- hud components
     "hud/components/scoreboard_mute_btn.lua",
+    "hud/components/scoreboard_settings_btn.lua",
     "hud/components/scoreboard_row.lua",
     "hud/components/scoreboard_title.lua",
     "hud/components/scoreboard_frame.lua",
